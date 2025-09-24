@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Troca de cor por horário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <script src="service-worker.js"></script>
+
+    <style>
+        body {
+            transition: background-color 1s;
+            font-family: Arial, sans-serif;
+            color: rgb(7, 7, 7);
+            text-align: center;
+            padding-top: 70px;
+            margin-top: 100px;
+        }
+
+       .div1 {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            justify-content: center;    
+            width: 300px;
+            height: 250px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5%;
+            align-items: center;
+        }
+
+        button {
+            padding: 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        @media(max-widht:768px) {
+            body {
+                font-size: 35px;
+                padding-top: 50px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="div1">
+        <p id="titulo">
+        <p id="hora"></p>
+        <p id="data"></p>
+        <p id="frase"></p>
+        <p id="diaTipo"></p>
+    </div>
+
+    <script>
+        function trocar() {
+            const agora = new Date();
+            const hora = agora.getHours();
+            const minutos = agora.getMinutes().toString().padStart(2, "0");
+            const segundos = agora.getSeconds().toString().padStart(2, "0");
+            const opcoes = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dataFormatada = agora.toLocaleDateString("pt-BR", opcoes);
+            const diaSemana = agora.getDay();
+            let cor;
+            let mensagem;
+            let tipoDia;
+
+            if (hora >= 6 && hora < 12) {
+                cor = "#FFD700"; // dourado manhã. 
+                mensagem = "Bom dia! ☀️";
+                frase = [
+                    "Acordaaaaaaa!",
+                    "Que tal um café? ☕",
+                    "Vamos começar o dia! 🌅"
+                ];
+
+            } else if (hora >= 12 && hora < 18) {
+                cor = "#FF8C00"; // laranja tarde
+                mensagem = "Boa tarde! 😎";
+                frase = [
+                    "Hora do almoço! 🍽️",
+                    "Que tal um café? ☕",
+                    "Aproveite a tarde! 🌞"
+                ];
+            } else if (hora >= 18 && hora < 23) {
+                cor = "#1E90FF"; // azul crepúsculo+.
+                mensagem = "Boa noite! 🌙";
+                frase = [
+                    "Hora do jantar! 🍽️",
+                    "Relaxe e aproveite! 🌌",
+                    "Que tal um chá? 🍵"
+                ];
+            } else {
+                cor = "#2F4F4F"; // cinza escuro madrugada
+                mensagem = "Hora de descansar! 😴";
+                frase = [
+                    "Durma bem! 🛌",
+                    "Boa noite! 🌙",
+                    "Sonhe com os anjos! 😇"
+                ];
+            }
+            if (diaSemana === 0 || diaSemana === 6) {
+                tipoDia = "final de semana! 🎉";
+            } else {
+                tipoDia = "dia útil! 💼";
+            }
+            document.body.style.backgroundColor = cor;
+            document.getElementById("titulo").innerHTML = mensagem;
+            document.getElementById("data").innerHTML = "📅 " + dataFormatada;
+            document.getElementById("hora").innerHTML = "Agora são: " + hora + ":" + minutos + ":" + segundos;
+            document.getElementById("diaTipo").innerHTML = "Hoje é " + (diaSemana === 0 || diaSemana === 6 ? "final de semana! 🎉" : "dia útil! 💼");
+        }
+            let frase = [];
+            function trocarFrase() {
+                if (frase.length > 0) {
+                    const fraseAleatoria = frase[Math.floor(Math.random() * frase.length)];
+                    document.getElementById("frase").innerHTML = fraseAleatoria;
+                
+            }
+        }
+        trocar();
+        setInterval(trocar, 1000);
+        trocarFrase();
+        setInterval(trocarFrase, 5000); // Troca a frase a
+
+    </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+           navigator.serviceWorker.register("service-worker.js")
+           .then (() => console.log("Service Worker registrado"))
+           .catch(err => console.log(" Erro no SW:", err));
+        }
+    </script>
+</body>
+
+</html>
