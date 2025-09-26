@@ -15,8 +15,11 @@
             font-family: Arial, sans-serif;
             color: rgb(7, 7, 7);
             text-align: center;
+            height: 100vh;
             padding-top: 70px;
             margin-top: 100px;
+            background-size: cover;
+            background-repeat: no-repeat;
         }
 
        .div1 {
@@ -31,14 +34,12 @@
             align-items: center;
         }
 
-        button {
-            padding: 20px;
-            font-size: 16px;
-            margin-top: 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
+        #titulo {
+            color: rgb(13, 13, 14);
+            font-weight: bold;
+            font-size: 20px;
         }
+
 
         @media(max-widht:768px) {
             body {
@@ -78,7 +79,7 @@
             let tipoDia;
 
             if (hora >= 6 && hora < 12) {
-                cor = "#FFD700"; // dourado manhã. 
+                imagem = "url('manha.jpg')" ;
                 mensagem = "Bom dia! ☀️";
                 frase = [
                     "Acordaaaaaaa!",
@@ -87,7 +88,7 @@
                 ];
 
             } else if (hora >= 12 && hora < 18) {
-                cor = "#FF8C00"; // laranja tarde
+                imagem = "url('tarde.jpg')";
                 mensagem = "Boa tarde! 😎";
                 frase = [
                     "Hora do almoço! 🍽️",
@@ -95,7 +96,7 @@
                     "Aproveite a tarde! 🌞"
                 ];
             } else if (hora >= 18 && hora < 23) {
-                cor = "#1E90FF"; // azul crepúsculo+.
+               imagem = "url('noite.jpg')";
                 mensagem = "Boa noite! 🌙";
                 frase = [
                     "Hora do jantar! 🍽️",
@@ -103,7 +104,7 @@
                     "Que tal um chá? 🍵"
                 ];
             } else {
-                cor = "#2F4F4F"; // cinza escuro madrugada
+                imagem = "url('madrugada.jpg')";
                 mensagem = "Hora de descansar! 😴";
                 frase = [
                     "Durma bem! 🛌",
@@ -116,7 +117,7 @@
             } else {
                 tipoDia = "dia útil! 💼";
             }
-            document.body.style.backgroundColor = cor;
+            document.body.style.backgroundImage = imagem;
             document.getElementById("titulo").innerHTML = mensagem;
             document.getElementById("data").innerHTML = "📅 " + dataFormatada;
             document.getElementById("hora").innerHTML = "Agora são: " + hora + ":" + minutos + ":" + segundos;
